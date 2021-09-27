@@ -4,7 +4,6 @@ const url = require('url')
 const reader = require('./reader.js')
 
 const server = http.createServer(async (req, res) => {
-  //set  header content type
   res.setHeader('Content-type', 'application/json')
   let data = await reader('./db.json')
   let queryString = url.parse(req.url, true).query
@@ -12,19 +11,25 @@ const server = http.createServer(async (req, res) => {
   switch (true) {
     case req.url === '/articles':
       try {
+        res.statusCode = 200
         res.write(data)
         res.end()
-        res.stausCode = 200
         break
       } catch (err) {
         console.log(err)
       }
+    case typeof queryString.id !== 'string':
+      res.statusCode = 400
+      res.write('Not Valid')
+      res.end()
+      break
+
     case typeof queryString.id === 'string':
       const founded = JSON.parse(data).find((e) => e.id === queryString.id)
-      console.log('founded es', founded)
+      // console.log('founded es', founded)
       if (founded === undefined) {
+        res.statusCode = 404
         res.write('Not found')
-        res.stausCode = 404
         res.end()
         break
       }
