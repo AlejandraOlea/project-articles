@@ -6,15 +6,17 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "process": "node write.js",
-    "start": "node --inspect=0.0.0.0:9229 server.js"
+    "start": "nodemon src/index.js"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "eslint": "^7.32.0",
-    "eslint-config-google": "^0.14.0"
+    "eslint-config-google": "^0.14.0",
+    "nodemon": "^2.0.13"
   },
   "dependencies": {
+    "express": "^4.17.1",
     "yup": "^0.32.9"
   }
 }

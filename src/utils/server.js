@@ -1,7 +1,7 @@
 const http = require('http')
 const fs = require('fs')
 const url = require('url')
-const reader = require('./reader.js')
+const reader = require('../utils/reader.js')
 
 const server = http.createServer(async (req, res) => {
   res.setHeader('Content-type', 'application/json')
