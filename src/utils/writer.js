@@ -1,24 +1,10 @@
-const fs = require('fs')
-const { dbArray, noValid } = require('./arrays')
+const { writeFile } = require('fs')
+const { promisify } = require('util')
 
-const writeDb = async (item) => {
-  fs.writeFile('./db.json', item, { encoding: 'utf-8' }, (err, data) => {
-    if (err) {
-      console.log(err)
-    }
-    if (data) {
-      console.log('succes')
-    }
-  })
+const promisifiedWriteFile = promisify(writeFile)
+
+const dbWriter = async (item) => {
+  await promisifiedWriteFile('./src/db/db.json', JSON.stringify(item), { encoding: 'utf-8' })
+  console.log(`Succesfully wrote ${item.length} articles(s) in db.json.`)
 }
-const writeInvalid = async (item) => {
-  fs.writeFile('./invalid.json', item, { encoding: 'utf-8' }, (err, data) => {
-    if (err) {
-      console.log(err)
-    }
-    if (data) {
-      console.log('SUCCES')
-    }
-  })
-}
-module.exports = { writeDb, writeInvalid }
+module.exports = dbWriter

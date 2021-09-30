@@ -2,8 +2,8 @@ const yup = require('yup')
 const { dbArray, noValid } = require('./arrays')
 
 const validator = (data) => {
-  const parseData = JSON.parse(data)
-  console.log(parseData)
+  // const parseData = data
+  // console.log(parseData)
 
   let schema = yup.object().shape({
     id: yup.string().length(36).required(),
@@ -17,18 +17,20 @@ const validator = (data) => {
     source: yup.string().required(),
   })
 
-  schema
-    .validate(parseData)
+  return schema
+    .validate(data)
     .then(function (valid) {
       console.log('===VALID====', valid)
-      dbArray.push(parseData)
-      console.log('Array', dbArray)
+      // dbArray.push(data)
+      // console.log('Array', dbArray)
+      return true
     })
     .catch(function (err) {
       console.log('===NO VALID====', err)
       if (err) {
-        noValid.push(parseData)
+        // noValid.push(data)
         console.log('Array', noValid)
+        return false
       }
     })
 }
