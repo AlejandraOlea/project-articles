@@ -3,9 +3,10 @@ const articlesRouter = Router()
 const path = require('path')
 const { v4: uuidv4 } = require('uuid')
 const moment = require('moment')
-
 const dbWriter = require('../utils/writer.js')
 const reader = require('../utils/reader.js')
+const validateBody = require('../utils/isValid')
+const { writer } = require('repl')
 
 articlesRouter.get('/', async (req, res) => {
   try {
@@ -33,22 +34,6 @@ articlesRouter.get('/:id', async (req, res) => {
   }
 })
 
-function validateBody(req, res) {
-  if (!req.body.title) res.status(400).send('title is missing')
-  if (!req.body.url) res.status(400).send('url is missing')
-  if (!req.body.keywords) res.status(400).send('keywords is missing')
-  if (!Array.isArray(req.body.keywords)) {
-    res.status(404).send('keyword is empty')
-  }
-  if (req.body.keywords.length === 0) {
-    res.status(400).send()
-  }
-  if (!req.body.author) res.status(400).send('author is missing')
-  if (!req.body.readMins) res.status(400).send('readMins is missing')
-  if (!req.body.source) res.status(400).send('source is missing')
-  return true
-}
-
 articlesRouter.post('/', async (req, res) => {
   const { title, url, keywords, author, readMins, source } = req.body
   // console.log(req.body)
@@ -72,52 +57,86 @@ articlesRouter.post('/', async (req, res) => {
   }
 })
 
+articlesRouter.patch('/', async (req, res) => {
+  const { id, title, url, keywords, author, readMins, source } = req.body
+  //res.send('algo cambio')
+
+  const db = await reader(path.resolve(__dirname, '../db/db.json'))
+
+  const founded = db.find((e) => e.id === id)
+
+  if (!founded) {
+    res.status(404).send('Not Found')
+  } else {
+    const isValid = validateBody(req, res)
+    if (isValid) {
+      const editedArticle = {
+        ...founded,
+        ...req.body,
+        publishedAt: founded.publishedAt,
+        modifiedAt: moment().format('MM/DD/yyyy'),
+      }
+      const index = db.findIndex((e) => e.id === id)
+      db[index] = editedArticle
+      await dbWriter(db)
+
+      res.status(200).json(editedArticle)
+    }
+  }
+})
+articlesRouter.put('/', async (req, res) => {
+  const { id, title, url, keywords, author, readMins, source } = req.body
+  //res.send('algo cambio')
+
+  const db = await reader(path.resolve(__dirname, '../db/db.json'))
+
+  const founded = db.find((e) => e.id === id)
+
+  if (!founded) {
+    const isValid = validateBody(req, res)
+
+    if (isValid) {
+      const newArticle = {
+        ...req.body,
+        id: uuidv4(),
+        publishedAt: moment().format('MM/DD/YY'),
+        modifiedAt: moment().format('MM/DD/YY'),
+      }
+      const articles = await reader(path.resolve(__dirname, '../db/db.json'))
+      console.log(articles)
+      articles.push(newArticle)
+      await dbWriter(articles)
+      res.status(200).send(newArticle)
+      return
+    } else {
+      res.status(500).send('TOTAL Invalid article')
+    }
+  } else {
+    const isValid = validateBody(req, res)
+    if (isValid) {
+      const editedArticle = {
+        ...founded,
+        ...req.body,
+        publishedAt: founded.publishedAt,
+        modifiedAt: moment().format('MM/DD/yyyy'),
+      }
+      const index = db.findIndex((e) => e.id === id)
+      db[index] = editedArticle
+      await dbWriter(db)
+
+      res.status(200).json(editedArticle)
+    }
+  }
+})
+
+const array = [{ id: 1 }, { id: 2 }]
+
+articlesRouter.delete('/delete', (req, res) => {
+  const { id } = req.params
+
+  const index = array.findIndex((e) => e.id === id)
+  delete array[index]
+
+  const filteredArray = array.filter((e) => e.id !== id)
+})
 module.exports = articlesRouter
-
-// articles.router.patch('/update', (req, res) => {
-//   const { title, url, keywords, author, readMins, source } = req.body
-//   //hacemos el read
-//   const db = []
-//   const founded = db.find((e) => e.id === id)
-//   if (!founded)
-//     if (title) {
-//       founded.title = title
-//     }
-//   if (url) {
-//     founded.url = url
-//   }
-
-//   return founded
-// })
-
-// //si no existe lo crea
-// articles.router.put('/update', (req, res) => {
-//   const { title, url, keywords, author, readMins, source } = req.body
-//   //hacemos el read
-//   const db = []
-//   const founded = db.find((e) => e.id === id)
-//   if (!founded)
-//     if (title) {
-//       founded.title = title
-//     }
-//   if (url) {
-//     founded.url = url
-//   }
-
-//   return founded
-// })
-
-//codigo anterior
-// const isArticleValid = await validator(newArticle)
-// console.log(isArticleValid)
-
-// if (isArticleValid) {
-//   const articles = await reader(path.resolve(__dirname, '../db/db.json'))
-//   articles.push(newArticle)
-
-//   writeDb(articles)
-//   res.status(200).send(newArticle)
-// } else {
-//   res.status(500).send('TOTAL Invalid article')
-// }
-// })
