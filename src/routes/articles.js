@@ -59,10 +59,7 @@ articlesRouter.post('/', async (req, res) => {
 
 articlesRouter.patch('/', async (req, res) => {
   const { id, title, url, keywords, author, readMins, source } = req.body
-  //res.send('algo cambio')
-
   const db = await reader(path.resolve(__dirname, '../db/db.json'))
-
   const founded = db.find((e) => e.id === id)
 
   if (!founded) {
@@ -86,15 +83,10 @@ articlesRouter.patch('/', async (req, res) => {
 })
 articlesRouter.put('/', async (req, res) => {
   const { id, title, url, keywords, author, readMins, source } = req.body
-  //res.send('algo cambio')
-
   const db = await reader(path.resolve(__dirname, '../db/db.json'))
-
   const founded = db.find((e) => e.id === id)
-
   if (!founded) {
     const isValid = validateBody(req, res)
-
     if (isValid) {
       const newArticle = {
         ...req.body,
@@ -123,20 +115,26 @@ articlesRouter.put('/', async (req, res) => {
       const index = db.findIndex((e) => e.id === id)
       db[index] = editedArticle
       await dbWriter(db)
-
       res.status(200).json(editedArticle)
     }
   }
 })
 
-const array = [{ id: 1 }, { id: 2 }]
-
-articlesRouter.delete('/delete', (req, res) => {
+articlesRouter.delete('/:id', async (req, res) => {
   const { id } = req.params
-
-  const index = array.findIndex((e) => e.id === id)
-  delete array[index]
-
-  const filteredArray = array.filter((e) => e.id !== id)
+  try {
+    const articles = await reader(path.resolve(__dirname, '../db/db.json'))
+    const filteredArticles = articles.filter((e) => e.id !== id)
+    if (!filteredArticles) {
+      res.status(404).send('not found')
+      return
+    }
+    await dbWriter(filteredArticles)
+    res.status(200).send(filteredArticles)
+    return
+  } catch (err) {
+    console.log(err)
+    res.status(500).json(err)
+  }
 })
 module.exports = articlesRouter
