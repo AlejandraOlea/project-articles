@@ -1,35 +1,35 @@
 [
   {
-    "title": "prueba1 ",
+    "title": "prueba8",
     "url": "https://www.prueba1.com",
-    "keywords": ["1", "2", "3"],
-    "author": "Alejandra Olea",
-    "readMins": 2,
-    "source": "article2",
-    "id": "3f8fa22b-82ff-4d69-84fa-296b85ba3a6d",
-    "publishedAt": "10/01/21",
-    "modifiedAt": "10/01/2021"
+    "keywords": ["A", "B", "C"],
+    "author": "Alejandra Olea P.",
+    "readMins": 10,
+    "source": "article 54",
+    "id": "1",
+    "publishedAt": "10/02/21",
+    "modifiedAt": "10/02/2021"
   },
   {
-    "title": "prueba1 ",
+    "title": "prueba8",
     "url": "https://www.prueba1.com",
-    "keywords": ["1", "2", "3"],
-    "author": "Alejandra",
-    "readMins": 2,
-    "source": "article",
-    "id": "4bb6c613-bf91-4385-afa9-e7048fe61678",
-    "publishedAt": "10/01/21",
-    "modifiedAt": "10/01/21"
+    "keywords": ["A", "B", "C"],
+    "author": "Alejandra Olea P.",
+    "readMins": 10,
+    "source": "OMG SUPER ARTICLES",
+    "id": "0ae5afe3-b1f5-401e-941d-dbf0d50d82f9",
+    "publishedAt": "10/02/21",
+    "modifiedAt": "10/02/2021"
   },
   {
-    "id": "d53bb03a-3308-4a68-a36f-98a53836c911",
-    "title": "prueba1 ",
+    "title": "prueba8",
     "url": "https://www.prueba1.com",
-    "keywords": ["1", "2", "3"],
-    "author": "Alejandra Olea",
-    "readMins": 2,
-    "source": "article2",
-    "publishedAt": "10/01/21",
-    "modifiedAt": "10/01/21"
+    "keywords": ["A", "B", "C"],
+    "author": "Alejandra Olea P.",
+    "readMins": 10,
+    "source": "OMG ARTICLES",
+    "id": "879de999-d91c-49bc-842c-e472dbc56b5f",
+    "publishedAt": "10/02/21",
+    "modifiedAt": "10/02/21"
   }
 ]
