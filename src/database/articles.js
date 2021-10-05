@@ -18,10 +18,9 @@ const ArticleModelSchema = new Schema({
 const ArticleModel = mongoose.model('ArticleModel', ArticleModelSchema)
 
 class Article {
-  create(data) {
-    const model = new ArticleModel(data)
+  list() {
     return new Promise((resolve, reject) => {
-      return model.save((err, data) => {
+      return ArticleModel.find({}, (err, data) => {
         if (err) {
           return reject(err)
         }
@@ -32,6 +31,17 @@ class Article {
   get(id) {
     return new Promise((resolve, reject) => {
       return ArticleModel.findById(id, (err, data) => {
+        if (err) {
+          return reject(err)
+        }
+        return resolve(data)
+      })
+    })
+  }
+  create(data) {
+    const model = new ArticleModel(data)
+    return new Promise((resolve, reject) => {
+      return model.save((err, data) => {
         if (err) {
           return reject(err)
         }

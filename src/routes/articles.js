@@ -9,6 +9,16 @@ const validateBody = require('../utils/isValid')
 const { writer } = require('repl')
 const articleModel = require('../database/articles')
 
+articlesRouter.get('/', async (req, res) => {
+  try {
+    const data = await articleModel.list()
+    res.status(200).json(data)
+  } catch (err) {
+    console.log(err)
+    res.status(500).json(err)
+  }
+})
+
 articlesRouter.get('/:id', async (req, res) => {
   const { id } = req.params
   try {
