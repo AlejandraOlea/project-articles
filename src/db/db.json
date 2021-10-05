@@ -1,17 +1,17 @@
 [
   {
-    "title": "prueba8",
+    "title": "prueba99999",
     "url": "https://www.prueba1.com",
     "keywords": ["A", "B", "C"],
     "author": "Alejandra Olea P.",
     "readMins": 10,
     "source": "article 54",
     "id": "1",
-    "publishedAt": "10/02/21",
-    "modifiedAt": "10/02/2021"
+    "publishedAt": "10/02/2021",
+    "modifiedAt": "10/03/2021"
   },
   {
-    "title": "prueba8",
+    "title": "prueba1111",
     "url": "https://www.prueba1.com",
     "keywords": ["A", "B", "C"],
     "author": "Alejandra Olea P.",
@@ -20,16 +20,5 @@
     "id": "0ae5afe3-b1f5-401e-941d-dbf0d50d82f9",
     "publishedAt": "10/02/21",
     "modifiedAt": "10/02/2021"
-  },
-  {
-    "title": "prueba8",
-    "url": "https://www.prueba1.com",
-    "keywords": ["A", "B", "C"],
-    "author": "Alejandra Olea P.",
-    "readMins": 10,
-    "source": "OMG ARTICLES",
-    "id": "879de999-d91c-49bc-842c-e472dbc56b5f",
-    "publishedAt": "10/02/21",
-    "modifiedAt": "10/02/21"
   }
 ]
