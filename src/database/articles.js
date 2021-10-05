@@ -39,6 +39,16 @@ class Article {
       })
     })
   }
+  remove(id) {
+    return new Promise((resolve, reject) => {
+      return ArticleModel.findByIdAndRemove(id, (err, data) => {
+        if (err) {
+          return reject(err)
+        }
+        return resolve(console.log('Removed Article: ', data))
+      })
+    })
+  }
 }
 
 module.exports = new Article()

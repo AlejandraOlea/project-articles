@@ -32,18 +32,6 @@ articlesRouter.post('/', async (req, res) => {
   }
 })
 
-// articlesRouter.post('/', async (req, res) => {
-//   const data = req.body
-//   try {
-//     const articles = await articleModel.create(data)
-//     console.log('===FROM POST DATA ES=====', articles)
-//   } catch (err) {
-//     console.log('Error', err)
-//   }
-
-//   res.status(200).send('OK !')
-// })
-
 // articlesRouter.patch('/id', async (req, res) => {
 //   const { id } = req.params
 //   const data = req.body
@@ -58,6 +46,7 @@ articlesRouter.post('/', async (req, res) => {
 //     }
 //   }
 // })
+
 // articlesRouter.put('/', async (req, res) => {
 //   const { id, title, url, keywords, author, readMins, source } = req.body
 //   const db = await reader(path.resolve(__dirname, '../db/db.json'))
@@ -97,14 +86,14 @@ articlesRouter.post('/', async (req, res) => {
 //   }
 // })
 
-// articlesRouter.delete('/:id', async (req, res) => {
-//   const { id } = req.params
-//   try {
-//     const articles = await articleModel.remove(id)
-//     res.status(200).send(articles)
-//   } catch (err) {
-//     console.log('ERROR EN DELETE', err)
-//     res.status(404).send(err)
-//   }
-// })
+articlesRouter.delete('/:id', async (req, res) => {
+  const { id } = req.params
+  try {
+    const articles = await articleModel.remove(id)
+    res.status(200).send(articles)
+  } catch (err) {
+    console.log('ERROR EN DELETE', err)
+    res.status(404).send(err)
+  }
+})
 module.exports = articlesRouter
