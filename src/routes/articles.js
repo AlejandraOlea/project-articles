@@ -42,20 +42,32 @@ articlesRouter.post('/', async (req, res) => {
   }
 })
 
-// articlesRouter.patch('/id', async (req, res) => {
-//   const { id } = req.params
-//   const data = req.body
-//   const isValid = validateBody(req, res)
-//   if (isValid) {
-//     try {
-//       const article = await articleModel.update(id, data)
-//       console.log('==article==', article)
-//     } catch (err) {
-//       console.log(err)
-//       res.status(404).send('An error has occurred')
-//     }
-//   }
-// })
+articlesRouter.patch('/:id', async (req, res) => {
+  const { id } = req.params
+  const found = await articleModel.get(id)
+  console.log('FFFFF', found)
+  if (!found) {
+    res.status(404).send('Not Found')
+  } else {
+    // const isValid = validateBody(req, res)
+    // if (isValid) {
+    const editedArticle = {
+      ...found._doc,
+      ...req.body,
+      modifiedAt: moment().format('MM/DD/yyyy'),
+    }
+    console.log('BODY', req.body)
+    console.log('OOOOO', editedArticle)
+    try {
+      await articleModel.update(id, editedArticle)
+      res.status(200).send('Success')
+      console.log(editedArticle)
+    } catch (err) {
+      console.log(err)
+      res.status(500).send(err)
+    }
+  }
+})
 
 // articlesRouter.put('/', async (req, res) => {
 //   const { id, title, url, keywords, author, readMins, source } = req.body

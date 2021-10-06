@@ -49,6 +49,17 @@ class Article {
       })
     })
   }
+  update(id, data) {
+    return new Promise((resolve, reject) => {
+      return ArticleModel.findByIdAndUpdate(id, data, (err, result) => {
+        console.log('llllll', data)
+        if (err) {
+          return reject(err)
+        }
+        return resolve(result)
+      })
+    })
+  }
   remove(id) {
     return new Promise((resolve, reject) => {
       return ArticleModel.findByIdAndRemove(id, (err, data) => {
