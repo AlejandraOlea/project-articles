@@ -1,12 +1,8 @@
 const { Router } = require('express')
 const articlesRouter = Router()
 const path = require('path')
-const { v4: uuidv4 } = require('uuid')
 const moment = require('moment')
-const dbWriter = require('../utils/writer.js')
-const reader = require('../utils/reader.js')
 const validateBody = require('../utils/isValid')
-const { writer } = require('repl')
 const articleModel = require('../database/articles')
 
 articlesRouter.get('/', async (req, res) => {
