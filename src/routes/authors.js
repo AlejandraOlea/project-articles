@@ -1,5 +1,4 @@
 const { Router } = require('express')
-// const articlesRouter = Router()
 const authorsRouter = Router()
 const path = require('path')
 const moment = require('moment')
@@ -42,7 +41,7 @@ authorsRouter.post('/', async (req, res) => {
 authorsRouter.patch('/:id', async (req, res) => {
   const { id } = req.params
   const found = await authorsModel.get(id)
-  console.log('FFFFF', found)
+  console.log('FOUND', found)
   if (!found) {
     res.status(404).send('Not Found')
   } else {
@@ -54,11 +53,44 @@ authorsRouter.patch('/:id', async (req, res) => {
       modifiedAt: moment().format('MM/DD/yyyy'),
     }
     console.log('BODY', req.body)
-    console.log('OOOOO', editedAuthor)
+    console.log('EDITED AUTHOR', editedAuthor)
     try {
-      await authorsModel.update(id, editedAuthor)
-      res.status(200).send('Autthor Successfully modified')
+      const result = await authorsModel.update(id, editedAuthor)
+      res.status(200).send(result)
       console.log(editedAuthor)
+    } catch (err) {
+      console.log(err)
+      res.status(500).send(err)
+    }
+  }
+})
+authorsRouter.put('/:id', async (req, res) => {
+  const { id } = req.params
+  const found = await authorsModel.get(id)
+  console.log('FFFFF', found)
+  if (!found) {
+    const data = req.body
+    try {
+      const article = await authorsModel.create(data)
+      console.log('hola desde article/post', article)
+      res.status(200).json(article)
+    } catch (err) {
+      console.log(err)
+    }
+  } else {
+    // const isValid = validateBody(req, res)
+    // if (isValid) {
+    const editedArticle = {
+      ...found._doc,
+      ...req.body,
+      modifiedAt: moment().format('MM/DD/yyyy'),
+    }
+    console.log('BODY', req.body)
+    console.log('OOOOO', editedArticle)
+    try {
+      await authorsModel.update(id, editedArticle)
+      res.status(200).send('Author Successfully modified')
+      console.log(editedArticle)
     } catch (err) {
       console.log(err)
       res.status(500).send(err)
@@ -70,6 +102,7 @@ authorsRouter.delete('/:id', async (req, res) => {
   const { id } = req.params
   try {
     const articles = await authorsModel.remove(id)
+    console.log('Article Successfully Deleted')
     res.status(200).send(articles)
   } catch (err) {
     console.log('ERROR EN DELETE', err)

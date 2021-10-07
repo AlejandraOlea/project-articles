@@ -64,7 +64,6 @@ articlesRouter.patch('/:id', async (req, res) => {
     }
   }
 })
-
 articlesRouter.put('/:id', async (req, res) => {
   const { id } = req.params
   const found = await articleModel.get(id)
@@ -103,7 +102,8 @@ articlesRouter.delete('/:id', async (req, res) => {
   const { id } = req.params
   try {
     const articles = await articleModel.remove(id)
-    res.status(200).send(articles)
+    console.log('Article Successfully Deleted')
+    res.status(200).send('Article Successfully Deleted')
   } catch (err) {
     console.log('ERROR EN DELETE', err)
     res.status(404).send(err)
