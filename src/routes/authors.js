@@ -32,7 +32,7 @@ authorsRouter.post('/', async (req, res) => {
   const data = req.body
   try {
     const article = await authorsModel.create(data)
-    console.log('hola', article)
+    console.log('hola desde author/post', article)
     res.status(200).json(article)
   } catch (err) {
     console.log(err)
@@ -48,17 +48,17 @@ authorsRouter.patch('/:id', async (req, res) => {
   } else {
     // const isValid = validateBody(req, res)
     // if (isValid) {
-    const editedArticle = {
+    const editedAuthor = {
       ...found._doc,
       ...req.body,
       modifiedAt: moment().format('MM/DD/yyyy'),
     }
     console.log('BODY', req.body)
-    console.log('OOOOO', editedArticle)
+    console.log('OOOOO', editedAuthor)
     try {
-      await authorsModel.update(id, editedArticle)
-      res.status(200).send('Success')
-      console.log(editedArticle)
+      await authorsModel.update(id, editedAuthor)
+      res.status(200).send('Autthor Successfully modified')
+      console.log(editedAuthor)
     } catch (err) {
       console.log(err)
       res.status(500).send(err)

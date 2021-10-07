@@ -3,9 +3,9 @@ const { Schema } = mongoose
 
 //Set up de la base de datos
 const AuthorsModelSchema = new Schema({
-  id: String,
-  articles: String,
+  // id: String,revisar
   authorName: String,
+  articles: [String],
 })
 
 //conectando el esquema con la base de datos, generamos un modelo.

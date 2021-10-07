@@ -3,7 +3,7 @@ const { Schema } = mongoose
 
 //Set up de la base de datos
 const ArticleModelSchema = new Schema({
-  id: String,
+  // id: String,revisar
   title: String,
   url: String,
   keywords: [String],

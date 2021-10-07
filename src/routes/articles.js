@@ -31,7 +31,7 @@ articlesRouter.post('/', async (req, res) => {
   const data = req.body
   try {
     const article = await articleModel.create(data)
-    console.log('hola', article)
+    console.log('hola desde article/post', article)
     res.status(200).json(article)
   } catch (err) {
     console.log(err)
@@ -56,7 +56,7 @@ articlesRouter.patch('/:id', async (req, res) => {
     console.log('OOOOO', editedArticle)
     try {
       await articleModel.update(id, editedArticle)
-      res.status(200).send('Success')
+      res.status(200).send('Article Successfully modified')
       console.log(editedArticle)
     } catch (err) {
       console.log(err)
@@ -65,44 +65,39 @@ articlesRouter.patch('/:id', async (req, res) => {
   }
 })
 
-// articlesRouter.put('/', async (req, res) => {
-//   const { id, title, url, keywords, author, readMins, source } = req.body
-//   const db = await reader(path.resolve(__dirname, '../db/db.json'))
-//   const founded = db.find((e) => e.id === id)
-//   if (!founded) {
-//     const isValid = validateBody(req, res)
-//     if (isValid) {
-//       const newArticle = {
-//         ...req.body,
-//         id: uuidv4(),
-//         publishedAt: moment().format('MM/DD/YY'),
-//         modifiedAt: moment().format('MM/DD/YY'),
-//       }
-//       const articles = await reader(path.resolve(__dirname, '../db/db.json'))
-//       console.log(articles)
-//       articles.push(newArticle)
-//       await dbWriter(articles)
-//       res.status(200).send(newArticle)
-//       return
-//     } else {
-//       res.status(500).send('TOTAL Invalid article')
-//     }
-//   } else {
-//     const isValid = validateBody(req, res)
-//     if (isValid) {
-//       const editedArticle = {
-//         ...founded,
-//         ...req.body,
-//         publishedAt: founded.publishedAt,
-//         modifiedAt: moment().format('MM/DD/yyyy'),
-//       }
-//       const index = db.findIndex((e) => e.id === id)
-//       db[index] = editedArticle
-//       await dbWriter(db)
-//       res.status(200).json(editedArticle)
-//     }
-//   }
-// })
+articlesRouter.put('/:id', async (req, res) => {
+  const { id } = req.params
+  const found = await articleModel.get(id)
+  console.log('FFFFF', found)
+  if (!found) {
+    const data = req.body
+    try {
+      const article = await articleModel.create(data)
+      console.log('hola desde article/post', article)
+      res.status(200).json(article)
+    } catch (err) {
+      console.log(err)
+    }
+  } else {
+    // const isValid = validateBody(req, res)
+    // if (isValid) {
+    const editedArticle = {
+      ...found._doc,
+      ...req.body,
+      modifiedAt: moment().format('MM/DD/yyyy'),
+    }
+    console.log('BODY', req.body)
+    console.log('OOOOO', editedArticle)
+    try {
+      await articleModel.update(id, editedArticle)
+      res.status(200).send('Article Successfully modified')
+      console.log(editedArticle)
+    } catch (err) {
+      console.log(err)
+      res.status(500).send(err)
+    }
+  }
+})
 
 articlesRouter.delete('/:id', async (req, res) => {
   const { id } = req.params
