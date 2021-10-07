@@ -2,25 +2,19 @@ const mongoose = require('mongoose')
 const { Schema } = mongoose
 
 //Set up de la base de datos
-const ArticleModelSchema = new Schema({
+const AuthorsModelSchema = new Schema({
   // id: String,revisar
-  title: String,
-  url: String,
-  keywords: [String],
-  modifiedAt: Date,
-  publishedAt: Date,
-  author: String,
-  readMins: Number,
-  source: String,
+  authorName: String,
+  articles: [String],
 })
 
 //conectando el esquema con la base de datos, generamos un modelo.
-const ArticleModel = mongoose.model('ArticleModel', ArticleModelSchema)
+const AuthorsModel = mongoose.model('AuthorsModel', AuthorsModelSchema)
 
-class Article {
+class Author {
   list() {
     return new Promise((resolve, reject) => {
-      return ArticleModel.find({}, (err, data) => {
+      return AuthorsModel.find({}, (err, data) => {
         if (err) {
           return reject(err)
         }
@@ -30,7 +24,7 @@ class Article {
   }
   get(id) {
     return new Promise((resolve, reject) => {
-      return ArticleModel.findById(id, (err, data) => {
+      return AuthorsModel.findById(id, (err, data) => {
         if (err) {
           return reject(err)
         }
@@ -39,7 +33,7 @@ class Article {
     })
   }
   create(data) {
-    const model = new ArticleModel(data)
+    const model = new AuthorsModel(data)
     return new Promise((resolve, reject) => {
       return model.save((err, data) => {
         if (err) {
@@ -51,7 +45,7 @@ class Article {
   }
   update(id, data) {
     return new Promise((resolve, reject) => {
-      return ArticleModel.findByIdAndUpdate(id, data, (err, result) => {
+      return AuthorsModel.findByIdAndUpdate(id, data, (err, result) => {
         console.log('llllll', data)
         if (err) {
           return reject(err)
@@ -62,14 +56,14 @@ class Article {
   }
   remove(id) {
     return new Promise((resolve, reject) => {
-      return ArticleModel.findByIdAndRemove(id, (err, data) => {
+      return AuthorsModel.findByIdAndRemove(id, (err, data) => {
         if (err) {
           return reject(err)
         }
-        return resolve(console.log('Removed Article: ', data))
+        return resolve(console.log('Removed Author: ', data))
       })
     })
   }
 }
 
-module.exports = new Article()
+module.exports = new Author()

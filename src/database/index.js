@@ -1,16 +1,16 @@
 const mongoose = require('mongoose')
 
-/* ====FUNCION QUE INSTANCIA LA CONEXION BASE DE DATOS===*/
+/* ====FUNCION QUE INSTANCIA LA CONEXION A LA BASE DE DATOS===*/
 
 class Database {
   constructor() {
     ;(async () => {
       try {
         //conexion con la base datos
-        const connection = await mongoose.connect('mongodb://localhost:27017') //localhost:27017 es una base de datos?
+        const connection = await mongoose.connect('mongodb://localhost:27017')
         // console.log('THIS IS THE CONNECTION', connection)
         // <db>://<host>:<port>@<user>:<password>/<db_name>
-        return console.log('db is ready, from database/index.js CONSTRUCTOR==>')
+        return console.log('db is ready, from database/index.js')
       } catch (err) {
         console.log(err)
         throw new Error(err)
