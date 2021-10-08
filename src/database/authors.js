@@ -45,7 +45,7 @@ class Author {
   update(id, data) {
     return new Promise((resolve, reject) => {
       return AuthorsModel.findByIdAndUpdate(id, data, (err, result) => {
-        console.log('DATA FROM UPDATE DATABASE', data)
+        console.log('database/authors:update data', data)
         if (err) {
           return reject(err)
         }

@@ -14,4 +14,9 @@ function validateBody(req, res) {
   return true
 }
 
+function validateAuthors(req, res) {
+  if (!req.body.author) res.status(400).send('author is missing')
+  if (!req.body.articles) res.status(400).send('article is missing')
+  return true
+}
 module.exports = validateBody

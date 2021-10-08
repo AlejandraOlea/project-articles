@@ -52,7 +52,7 @@ class Article {
   update(id, data) {
     return new Promise((resolve, reject) => {
       return ArticleModel.findByIdAndUpdate(id, data, (err, result) => {
-        console.log('llllll', data)
+        console.log('databse/article:update data ', data)
         if (err) {
           return reject(err)
         }

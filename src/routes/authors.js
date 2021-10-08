@@ -31,7 +31,7 @@ authorsRouter.post('/', async (req, res) => {
   const data = req.body
   try {
     const article = await authorsModel.create(data)
-    console.log('hola desde author/post', article)
+    console.log('Creado en routes/author/post', article)
     res.status(200).json(article)
   } catch (err) {
     console.log(err)
@@ -40,8 +40,9 @@ authorsRouter.post('/', async (req, res) => {
 
 authorsRouter.patch('/:id', async (req, res) => {
   const { id } = req.params
+
   const found = await authorsModel.get(id)
-  console.log('FOUND', found)
+  console.log('found=>', found)
   if (!found) {
     res.status(404).send('Not Found')
   } else {
@@ -52,12 +53,12 @@ authorsRouter.patch('/:id', async (req, res) => {
       ...req.body,
       modifiedAt: moment().format('MM/DD/yyyy'),
     }
-    console.log('BODY', req.body)
-    console.log('EDITED AUTHOR', editedAuthor)
+    console.log('req.body', req.body)
+    console.log('editedAuthor=>', editedAuthor)
     try {
       const result = await authorsModel.update(id, editedAuthor)
       res.status(200).send(result)
-      console.log(editedAuthor)
+      console.log(result)
     } catch (err) {
       console.log(err)
       res.status(500).send(err)
@@ -67,7 +68,7 @@ authorsRouter.patch('/:id', async (req, res) => {
 authorsRouter.put('/:id', async (req, res) => {
   const { id } = req.params
   const found = await authorsModel.get(id)
-  console.log('FFFFF', found)
+  console.log('found', found)
   if (!found) {
     const data = req.body
     try {
