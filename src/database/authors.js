@@ -3,7 +3,6 @@ const { Schema } = mongoose
 
 //Set up de la base de datos
 const AuthorsModelSchema = new Schema({
-  // id: String,revisar
   authorName: String,
   articles: [String],
 })
@@ -46,7 +45,7 @@ class Author {
   update(id, data) {
     return new Promise((resolve, reject) => {
       return AuthorsModel.findByIdAndUpdate(id, data, (err, result) => {
-        console.log('llllll', data)
+        console.log('database/authors:update data', data)
         if (err) {
           return reject(err)
         }

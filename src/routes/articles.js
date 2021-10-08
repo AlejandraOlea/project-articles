@@ -31,7 +31,7 @@ articlesRouter.post('/', async (req, res) => {
   const data = req.body
   try {
     const article = await articleModel.create(data)
-    console.log('hola desde article/post', article)
+    console.log('Creado artículo en article/post', article)
     res.status(200).json(article)
   } catch (err) {
     console.log(err)
@@ -41,7 +41,7 @@ articlesRouter.post('/', async (req, res) => {
 articlesRouter.patch('/:id', async (req, res) => {
   const { id } = req.params
   const found = await articleModel.get(id)
-  console.log('FFFFF', found)
+  console.log('Found', found)
   if (!found) {
     res.status(404).send('Not Found')
   } else {
@@ -52,8 +52,8 @@ articlesRouter.patch('/:id', async (req, res) => {
       ...req.body,
       modifiedAt: moment().format('MM/DD/yyyy'),
     }
-    console.log('BODY', req.body)
-    console.log('OOOOO', editedArticle)
+    console.log('req.body', req.body)
+    console.log('editedArticle', editedArticle)
     try {
       await articleModel.update(id, editedArticle)
       res.status(200).send('Article Successfully modified')
@@ -64,11 +64,10 @@ articlesRouter.patch('/:id', async (req, res) => {
     }
   }
 })
-
 articlesRouter.put('/:id', async (req, res) => {
   const { id } = req.params
   const found = await articleModel.get(id)
-  console.log('FFFFF', found)
+  console.log('found', found)
   if (!found) {
     const data = req.body
     try {
@@ -86,8 +85,8 @@ articlesRouter.put('/:id', async (req, res) => {
       ...req.body,
       modifiedAt: moment().format('MM/DD/yyyy'),
     }
-    console.log('BODY', req.body)
-    console.log('OOOOO', editedArticle)
+    console.log('req.body', req.body)
+    console.log('editedArticle', editedArticle)
     try {
       await articleModel.update(id, editedArticle)
       res.status(200).send('Article Successfully modified')
@@ -103,7 +102,8 @@ articlesRouter.delete('/:id', async (req, res) => {
   const { id } = req.params
   try {
     const articles = await articleModel.remove(id)
-    res.status(200).send(articles)
+    console.log('Article Successfully Deleted')
+    res.status(200).send('Article Successfully Deleted')
   } catch (err) {
     console.log('ERROR EN DELETE', err)
     res.status(404).send(err)
