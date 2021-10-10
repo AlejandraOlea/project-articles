@@ -3,7 +3,7 @@ const { Schema } = mongoose
 
 //Set up de la base de datos
 const AuthorsModelSchema = new Schema({
-  authorName: String,
+  name: String,
   articles: [String],
 })
 
@@ -24,6 +24,16 @@ class Author {
   get(id) {
     return new Promise((resolve, reject) => {
       return AuthorsModel.findById(id, (err, data) => {
+        if (err) {
+          return reject(err)
+        }
+        return resolve(data)
+      })
+    })
+  }
+  getByName(name) {
+    return new Promise((resolve, reject) => {
+      return AuthorsModel.findOne(name, (err, data) => {
         if (err) {
           return reject(err)
         }

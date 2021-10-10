@@ -4,10 +4,13 @@ const path = require('path')
 const moment = require('moment')
 const validateBody = require('../utils/isValid')
 const articleModel = require('../database/articles')
+const authorModel = require('../database/authors')
+const Service = require('../service')
+const service = new Service(articleModel, authorModel)
 
 articlesRouter.get('/', async (req, res) => {
   try {
-    const data = await articleModel.list()
+    const data = await service.listArticles()
     res.status(200).json(data)
   } catch (err) {
     console.log(err)
@@ -18,90 +21,52 @@ articlesRouter.get('/', async (req, res) => {
 articlesRouter.get('/:id', async (req, res) => {
   const { id } = req.params
   try {
-    const founded = await articleModel.get(id)
+    const founded = await service.getArticle(id)
     console.log('==founded es: =>', founded)
     res.status(200).json(founded)
   } catch (err) {
-    console.log(err)
     res.status(500).json(err)
   }
 })
 
 articlesRouter.post('/', async (req, res) => {
-  const data = req.body
+  // validateBody(req, res)
   try {
-    const article = await articleModel.create(data)
-    console.log('Creado artículo en article/post', article)
+    const article = await service.createArticle(req.body)
+    console.log(article)
     res.status(200).json(article)
   } catch (err) {
+    res.status(500).json(err)
     console.log(err)
   }
 })
 
 articlesRouter.patch('/:id', async (req, res) => {
+  // validar input
   const { id } = req.params
-  const found = await articleModel.get(id)
-  console.log('Found', found)
-  if (!found) {
-    res.status(404).send('Not Found')
-  } else {
-    // const isValid = validateBody(req, res)
-    // if (isValid) {
-    const editedArticle = {
-      ...found._doc,
-      ...req.body,
-      modifiedAt: moment().format('MM/DD/yyyy'),
-    }
-    console.log('req.body', req.body)
-    console.log('editedArticle', editedArticle)
-    try {
-      await articleModel.update(id, editedArticle)
-      res.status(200).send('Article Successfully modified')
-      console.log(editedArticle)
-    } catch (err) {
-      console.log(err)
-      res.status(500).send(err)
-    }
+  try {
+    const founded = await service.updateArticle(id)
+    console.log('==founded es: =>', founded)
+    res.status(200).json(founded)
+  } catch (err) {
+    res.status(500).json(err)
   }
 })
 articlesRouter.put('/:id', async (req, res) => {
   const { id } = req.params
-  const found = await articleModel.get(id)
-  console.log('found', found)
-  if (!found) {
-    const data = req.body
-    try {
-      const article = await articleModel.create(data)
-      console.log('hola desde article/post', article)
-      res.status(200).json(article)
-    } catch (err) {
-      console.log(err)
-    }
-  } else {
-    // const isValid = validateBody(req, res)
-    // if (isValid) {
-    const editedArticle = {
-      ...found._doc,
-      ...req.body,
-      modifiedAt: moment().format('MM/DD/yyyy'),
-    }
-    console.log('req.body', req.body)
-    console.log('editedArticle', editedArticle)
-    try {
-      await articleModel.update(id, editedArticle)
-      res.status(200).send('Article Successfully modified')
-      console.log(editedArticle)
-    } catch (err) {
-      console.log(err)
-      res.status(500).send(err)
-    }
+  try {
+    const founded = await service.put(id)
+    console.log('==founded es: =>', founded)
+    res.status(200).json(founded)
+  } catch (err) {
+    res.status(500).json(err)
   }
 })
 
 articlesRouter.delete('/:id', async (req, res) => {
   const { id } = req.params
   try {
-    const articles = await articleModel.remove(id)
+    const articles = await service.remove(id)
     console.log('Article Successfully Deleted')
     res.status(200).send('Article Successfully Deleted')
   } catch (err) {
