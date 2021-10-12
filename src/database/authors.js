@@ -33,7 +33,7 @@ class Author {
   }
   getByName(name) {
     return new Promise((resolve, reject) => {
-      return AuthorsModel.findOne(name, (err, data) => {
+      return AuthorsModel.findOne({ name }, (err, data) => {
         if (err) {
           return reject(err)
         }

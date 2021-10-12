@@ -1,4 +1,5 @@
 // const validateBody = require('../utils/isValid')
+const moment = require('moment')
 
 class Service {
   constructor(articlesDb, authorsDb) {
@@ -9,38 +10,58 @@ class Service {
   async listArticles() {
     return await this.articlesDb.list()
   }
-  async getArticleById(Id) {
-    return await this.articlesDb.get(Id)
+
+  async getArticleById(id) {
+    return await this.articlesDb.get(id)
   }
 
-  async createArticle(data) {
-    //validate data
-    const { author } = data
-
-    //partir transaccion
-    const article = await this.articlesDb.create(...data)
-
+  async createArticle(req) {
+    // validateBody(req, res)
+    // const { author } = req.body
     //preguntar si el autor existe
-    const foundedAuthor = await this.authorsDb.getByName(author)
-    if (!foundedAuthor) {
-      //crear el author
-      await this.authorsDb.create(data.author, [article.id])
-      return
+    const newArticle = {
+      ...req.body,
+      publishedAt: moment().format('MM/DD/YYYY'),
+      modifiedAt: moment().format('MM/DD/YYYY'),
     }
-    await this.authorsDb.update()
+    const createdArticle = await this.articlesDb.create(newArticle)
+    console.log(createdArticle)
+    const foundedAuthor = await this.authorsDb.getByName(newArticle.author)
+    console.log(foundedAuthor)
+    if (!foundedAuthor) {
+      console.log('no se encontro el autor')
+      //crear el author
+      const newAuthor = {
+        name: newArticle.author,
+        articles: [createdArticle._id],
+      }
+      await this.authorsDb.create(newAuthor)
+      // await this.authorsDb.update({ articles: [article._id] })
+      return createdArticle
+    } else {
+      const authorArticles = foundedAuthor.articles
+
+      const pushArticles = authorArticles.push(createdArticle._id)
+      const editedAuthor = {
+        name: foundedAuthor.name,
+        articles: pushArticles,
+      }
+      console.log(pushArticles)
+      await this.authorsDb.update(foundedAuthor, editedAuthor)
+    }
   }
 
   async updateArticle(data) {
     return await this.articlesDb.update(data)
   }
 
-  async putArticle(data) {
-    return await this.articlesDb.update(data)
+  async put(id) {
+    return await this.articlesDb.update(id)
   }
 
-  createAuthor() {}
-  getArticle() {}
-  getAuthor() {}
+  async removeArticle(id) {
+    return await this.articlesDb.remove(id)
+  }
 }
 
 module.exports = Service

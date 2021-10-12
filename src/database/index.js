@@ -9,7 +9,7 @@ class Database {
         //conexion con la base datos
         const connection = await mongoose.connect('mongodb://localhost:27017')
         // console.log('THIS IS THE CONNECTION', connection)
-        // <db>://<host>:<port>@<user>:<password>/<db_name>
+
         return console.log('db is ready, from database/index.js')
       } catch (err) {
         console.log(err)

@@ -1,9 +1,12 @@
 const { Router } = require('express')
 const authorsRouter = Router()
-const path = require('path')
-const moment = require('moment')
 const validateBody = require('../utils/isValid')
+const moment = require('moment')
 const authorsModel = require('../database/authors')
+const articlesModel = require('../database/articles')
+const Service = require('../service')
+
+const service = new Service(articlesModel, authorsModel)
 
 authorsRouter.get('/', async (req, res) => {
   try {
