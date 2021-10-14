@@ -4,40 +4,51 @@ const validateBody = require('../utils/isValid')
 const articlesModel = require('../database/articles')
 const authorsModel = require('../database/authors')
 const Service = require('../service')
+const logger = require('../logger')
 
 const service = new Service(articlesModel, authorsModel)
 
 articlesRouter.get('/', async (req, res) => {
   try {
     const data = await service.listArticles()
-    console.log('===list articles====')
+    logger.info(`[Articles][List][Request]${JSON.stringify(req.params)}`)
+
+    logger.info(`[Articles][List][Response]${JSON.stringify(data)}`)
     res.status(200).json(data)
-  } catch (err) {
-    console.log(err)
-    res.status(500).json(err)
+  } catch (error) {
+    console.log(error)
+    logger.error(`[Articles][List][Error]${JSON.stringify(error)}`)
+    res.status(500).json(error)
   }
 })
 
 articlesRouter.get('/:id', async (req, res) => {
   const { id } = req.params
+  logger.info(`[Articles][GetById][Request]${JSON.stringify(req.params)}`)
+
   try {
     const founded = await service.getArticleById(id)
-    console.log('==get by id=>', founded)
+    logger.info(`[Articles][GetById][Response]${JSON.stringify(founded)}`)
+    console.log('==founded by id=>', founded)
     res.status(200).json(founded)
-  } catch (err) {
-    res.status(500).json(err)
+  } catch (error) {
+    logger.error(`[Articles][GetById][Error]${JSON.stringify(error)}`)
+    res.status(500).json(error)
   }
 })
 
 articlesRouter.post('/', async (req, res) => {
   // validateBody(req, res)
   try {
+    logger.info(`[Articles][Create][Request]${JSON.stringify(req.body)}`)
     const article = await service.createArticle(req)
+    logger.info(`[Articles][Create][Response]${JSON.stringify(article)}`)
     console.log(article)
     res.status(200).json(article)
-  } catch (err) {
-    res.status(500).json(err)
-    console.log(err)
+  } catch (error) {
+    res.status(500).json(error)
+    logger.error(`[Articles][Create][Error]${JSON.stringify(error)}`)
+    console.log(error)
   }
 })
 

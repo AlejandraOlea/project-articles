@@ -1,13 +1,39 @@
+require('dotenv').config()
 const express = require('express')
 const app = express()
-//llama instanciacion de la base de datos desde database/index.js
 const db = require('./database')
+const jwt = require('jsonwebtoken')
+
 const router = require('./routes')
 
-// console.log('db.conexion es ==>', db.connection)
+const authMiddleware = (req, res, next) => {
+  const token = req.headers['authorization']
+  console.log('aqui el token', token)
+  if (!token) {
+    res.status(401).send('not authorized')
+    return
+  }
+  try {
+    jwt.verify(token.split('')[1], process.env.SECRET_KEY)
+  } catch (err) {
+    res.status(401).send('Not authorized')
+    return
+  }
+  next()
+}
+
+const performanceMiddleware = (req, res, next) => {
+  console.time()
+  next()
+  console.timeEnd()
+}
 
 app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
+app.use(performanceMiddleware)
+
+// app.use(express.urlencoded({ extended: true }))
+app.use('/api/v1/auth', router.authRouter)
+// app.use(authMiddleware)
 app.use('/api/v1/articles', router.articlesRouter)
 app.use('/api/v1/authors', router.authorsRouter)
 

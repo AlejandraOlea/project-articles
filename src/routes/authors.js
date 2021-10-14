@@ -10,7 +10,8 @@ const service = new Service(articlesModel, authorsModel)
 
 authorsRouter.get('/', async (req, res) => {
   try {
-    const data = await authorsModel.list()
+    const data = await service.listAuthors()
+    console.log('===list authors====')
     res.status(200).json(data)
   } catch (err) {
     console.log(err)

@@ -15,3 +15,8 @@ Nuestro cliente "Instafeed News Agency" es una agencia de noticias que distribuy
 Dado que el volumen de contenido ha crecido, la empresa busca automatizar algunas tareas como: validar el contenido recibido, centralizarlo, y exponerlo.
 
 En este repositorio se irán creando branches que representan el proceso iterativo de las tareas mencionadas anteriormente.
+
+### Env variable
+
+SECRET_KEY = <your_key>
+ENVIRORMENT = <enviroment>

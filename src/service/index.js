@@ -10,6 +10,9 @@ class Service {
   async listArticles() {
     return await this.articlesDb.list()
   }
+  async listAuthors() {
+    return await this.authorsDb.list()
+  }
 
   async getArticleById(id) {
     return await this.articlesDb.get(id)
@@ -17,7 +20,6 @@ class Service {
 
   async createArticle(req) {
     // validateBody(req, res)
-    // const { author } = req.body
     //preguntar si el autor existe
     const newArticle = {
       ...req.body,
@@ -40,18 +42,23 @@ class Service {
       return createdArticle
     } else {
       const authorArticles = foundedAuthor.articles
-
-      const pushArticles = authorArticles.push(createdArticle._id)
+      authorArticles.push(createdArticle._id)
       const editedAuthor = {
         name: foundedAuthor.name,
-        articles: pushArticles,
+        articles: authorArticles,
       }
-      console.log(pushArticles)
+      console.log('PUSH', authorArticles)
       await this.authorsDb.update(foundedAuthor, editedAuthor)
+      return createdArticle
     }
   }
 
   async updateArticle(data) {
+    const { id } = req.params
+    const founded = await service.updateArticle(id)
+    if (!founded) {
+      console.log('article not found')
+    }
     return await this.articlesDb.update(data)
   }
 
