@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-
+//generando el token, de forma syncrona
 class AuthService {
   constructor() {
     this.key = process.env.SECRET_KEY

@@ -1,22 +1,4 @@
-const mongoose = require('mongoose')
-const { Schema } = mongoose
-
-//Set up de la base de datos
-const ArticleModelSchema = new Schema({
-  // id: String,revisar
-  title: String,
-  url: String,
-  keywords: [String],
-  modifiedAt: Date,
-  publishedAt: Date,
-  author: String,
-  readMins: Number,
-  source: String,
-})
-
-//conectando el esquema con la base de datos, generamos un modelo.
-const ArticleModel = mongoose.model('ArticleModel', ArticleModelSchema)
-
+const ArticleModel = require('./models/articles-model')
 class Article {
   list() {
     return new Promise((resolve, reject) => {

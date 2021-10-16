@@ -46,8 +46,8 @@ articlesRouter.post('/', async (req, res) => {
     console.log(article)
     res.status(200).json(article)
   } catch (error) {
-    res.status(500).json(error)
     logger.error(`[Articles][Create][Error]${JSON.stringify(error)}`)
+    res.status(500).json(error)
     console.log(error)
   }
 })
@@ -55,32 +55,41 @@ articlesRouter.post('/', async (req, res) => {
 articlesRouter.patch('/:id', async (req, res) => {
   // validateBody(req, res)
   const { id } = req.params
+  logger.info(`[Articles][Update][Request]${JSON.stringify(req.params)}`)
   try {
     const founded = await service.updateArticle(id)
+    logger.info(`[Articles][[Update][Response]${JSON.stringify(founded)}`)
     console.log('==founded es: =>', founded)
     res.status(200).json(founded)
   } catch (err) {
+    logger.err(`[Articles][Update][Error]${JSON.stringify(error)}`)
     res.status(500).json(err)
   }
 })
 articlesRouter.put('/:id', async (req, res) => {
   const { id } = req.params
+  logger.info(`[Articles][Update][Request]${JSON.stringify(req.params)}`)
   try {
     const founded = await service.put(id)
+    logger.info(`[Articles][[Update][Response]${JSON.stringify(founded)}`)
     console.log('==founded es: =>', founded)
     res.status(200).json(founded)
   } catch (err) {
+    logger.err(`[Articles][Update][Error]${JSON.stringify(error)}`)
     res.status(500).json(err)
   }
 })
 
 articlesRouter.delete('/:id', async (req, res) => {
   const { id } = req.params
+  logger.info(`[Articles][Delete][Request]${JSON.stringify(req.params)}`)
   try {
     const articles = await service.removeArticle(id)
+    logger.info(`[Articles][Delete][Request]${JSON.stringify(article)}`)
     console.log('Article Successfully Deleted')
     res.status(200).send('Article Successfully Deleted')
   } catch (err) {
+    logger.err(`[Articles][Delete][Error]${JSON.stringify(error)}`)
     console.log('ERROR EN DELETE', err)
     res.status(404).send(err)
   }

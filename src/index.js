@@ -10,13 +10,13 @@ const authMiddleware = (req, res, next) => {
   const token = req.headers['authorization']
   console.log('aqui el token', token)
   if (!token) {
-    res.status(401).send('not authorized')
+    res.status(401).send('not authorized at all')
     return
   }
   try {
-    jwt.verify(token.split('')[1], process.env.SECRET_KEY)
+    jwt.verify(token.split(' ')[1], process.env.SECRET_KEY)
   } catch (err) {
-    res.status(401).send('Not authorized')
+    res.status(401).send('NOT AUTHORIZED')
     return
   }
   next()
