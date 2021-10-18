@@ -30,7 +30,6 @@ describe('articles use cases', () => {
     } catch (err) {}
   })
 
-  //TO-DO probar ocn try catch
   it('should match with id', async () => {
     const response = await service.getArticleById({ params: { id: '507f191e810c19729de860ea' } })
     expect(JSON.parse(JSON.stringify(response))).toMatchObject(_doc)
