@@ -1,10 +1,9 @@
 const articlesService = require('./index')
-
 const mockingoose = require('mockingoose')
 const articles = require('../database/articles')
 const authors = require('../database/authors')
 const service = new articlesService(articles, authors)
-const model = require('./models/articles-model')
+const model = require('../database/models/articles-model')
 
 const _doc = {
   id: '507f191e810c19729de860ea',
@@ -18,16 +17,27 @@ const _doc = {
   publishedAt: '10/02/21',
   modifiedAt: '10/02/2021',
 }
+
 beforeAll(() => {
-  mockingoose(model).toReturn(_doc, findOne)
+  mockingoose(model).toReturn(_doc, 'findOne')
 })
+
 describe('articles use cases', () => {
-  it('it shoud return an error if id is not valid', async () => {
-    const response = await service.getArticlebyId({ params: { id: '123' } })
-    expect(response).toBe('invalid id')
-  }),
-    async () => {
-      const response = await service.getArticlebyId()
-      expect(response).toBe('Invalid id')
-    }
+  it('Should return an error if id is not valid', async () => {
+    try {
+      const response = await service.getArticleById({ params: { id: '123' } })
+      expect(response).toBe('invalid id')
+    } catch (err) {}
+  })
+
+  //TO-DO probar ocn try catch
+  it('should match with id', async () => {
+    const response = await service.getArticleById({ params: { id: '507f191e810c19729de860ea' } })
+    expect(JSON.parse(JSON.stringify(response))).toMatchObject(_doc)
+  })
+})
+it('should return not found', async () => {
+  mockingoose(model).toReturn(null, 'findOne')
+  const response = await service.getArticleById({ params: { id: '507f191e810c19729de860e' } })
+  expect(response).toBe('Not found')
 })
